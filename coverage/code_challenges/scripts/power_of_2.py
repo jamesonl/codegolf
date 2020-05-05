@@ -12,31 +12,44 @@
 
 from math import sqrt
 
+def recurse_power(res):
+    quotient = res[0] / 2
+    distance = quotient / 2
+    derivative = distance / 2
+    return [quotient, distance, derivative]
+
 def is_power2(num):
     modulus = num % 2
-    if modulus > 0:
-        return False
-    else:
+    counter = 1
+    if modulus == 0:
         quotient = num / 2
         distance = quotient / 2
         derivative = distance / 2
-        if quotient < 2:
-            answer = 2**quotient
-        elif quotient == 2:
-            answer = 2/derivative
-        elif quotient > 2:
-            answer = 2**(distance - (derivative - 1))
 
-        print(num, quotient, distance, derivative, answer)
+        res = [quotient, distance, derivative]
 
-        if answer == num:
-            return True
+        while res != [2, 1, 0]:
+            if res == [0, 0, 0]:
+                break
+            else:
+                res = recurse_power(res)
+                counter += 1
+
+        if res == [0, 0, 0]:
+            return False
+        elif res == [2, 1, 0]:
+            comp = [num, counter, quotient, distance, derivative]
+            # answer = (2**(comp[1] * 2 - abs(comp[4] - counter)))
+            answer = True if 2**(comp[1]+1) == num else False
+            return answer
         else:
             return False
+    else:
+        return False
 
-is_power2(2)
-is_power2(4)
-is_power2(16)
-is_power2(32)
-is_power2(64)
-is_power2(20)
+
+
+check_4 = is_power2(4)
+check_3 = is_power2(3)
+
+print(check_3, check_4)
